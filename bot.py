@@ -22,13 +22,18 @@ class Bot:
     """
 
     def __init__(self):
-        self.team = "TeamName"  # This is your team name
+        self.team = "Fast Bått"  # This is your team name
         # This is the course that the ship has to follow
         self.course = [
-            Checkpoint(latitude=43.797109, longitude=-11.264905, radius=50),
-            Checkpoint(longitude=-29.908577, latitude=17.999811, radius=50),
-            Checkpoint(latitude=-11.441808, longitude=-29.660252, radius=50),
-            Checkpoint(longitude=-63.240264, latitude=-61.025125, radius=50),
+            Checkpoint(latitude=17.38, longitude=-68.9  , radius=10),
+            Checkpoint(latitude=9.35529, longitude=-80.593349, radius=50),
+            Checkpoint(latitude=8.82625, longitude=-79.64060, radius=5),
+            Checkpoint(latitude=8.83, longitude=-79.48, radius=20),
+            Checkpoint(latitude=4.50, longitude=-79.25, radius=50),
+            # Checkpoint(latitude=43.797109, longitude=-11.264905, radius=50),
+            # Checkpoint(longitude=-29.908577, latitude=17.999811, radius=50),
+            # Checkpoint(latitude=-11.441808, longitude=-29.660252, radius=50),
+            # Checkpoint(longitude=-63.240264, latitude=-61.025125, radius=50),
             Checkpoint(latitude=2.806318, longitude=-168.943864, radius=1990.0),
             Checkpoint(latitude=-62.052286, longitude=169.214572, radius=50.0),
             Checkpoint(latitude=-15.668984, longitude=77.674694, radius=1190.0),
@@ -40,6 +45,7 @@ class Bot:
                 longitude=config.start.longitude,
                 radius=5,
             ),
+            
         ]
 
     def run(
@@ -108,6 +114,15 @@ class Bot:
         )
         current_position_terrain = world_map(latitudes=latitude, longitudes=longitude)
         # ===========================================================
+
+        changed_diretion = False
+        # Check for nearby land using the world_map function
+        if world_map(latitudes=latitude, longitudes=longitude) == 0:  # Land detected
+            instructions.heading = (heading + 90) % 360  # Adjust to avoid land
+            changed_diretion= True
+        if changed_diretion and world_map(latitudes=latitude, longitudes=longitude) == 1:
+            instructions.heading = (heading - 90) % 360  # Adjust to avoid land
+            changed_diretion= False
 
         # Go through all checkpoints and find the next one to reach
         for ch in self.course:
