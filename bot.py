@@ -115,14 +115,14 @@ class Bot:
         current_position_terrain = world_map(latitudes=latitude, longitudes=longitude)
         # ===========================================================
 
-        changed_diretion = False
-        # Check for nearby land using the world_map function
-        if world_map(latitudes=latitude, longitudes=longitude) == 0:  # Land detected
-            instructions.heading = (heading + 90) % 360  # Adjust to avoid land
-            changed_diretion= True
-        if changed_diretion and world_map(latitudes=latitude, longitudes=longitude) == 1:
-            instructions.heading = (heading - 90) % 360  # Adjust to avoid land
-            changed_diretion= False
+        # changed_diretion = False
+        # # Check for nearby land using the world_map function
+        # if world_map(latitudes=latitude, longitudes=longitude) == 0:  # Land detected
+        #     instructions.heading = (heading + 90) % 360  # Adjust to avoid land
+        #     changed_diretion= True
+        # if changed_diretion and world_map(latitudes=latitude, longitudes=longitude) == 1:
+        #     instructions.heading = (heading - 90) % 360  # Adjust to avoid land
+        #     changed_diretion= False
 
         # Go through all checkpoints and find the next one to reach
         for ch in self.course:
