@@ -123,6 +123,21 @@ class Bot:
         # if changed_diretion and world_map(latitudes=latitude, longitudes=longitude) == 1:
         #     instructions.heading = (heading - 90) % 360  # Adjust to avoid land
         #     changed_diretion= False
+        
+        # Check the current position for land
+        terrain = world_map(latitudes=latitude, longitudes=longitude)
+
+        if terrain == 0:  # If land detected
+            # Check alternative headings in increments (e.g., every 45 degrees)
+            for angle_offset in range(0, 360, 45):
+                new_heading = (heading + angle_offset) % 360
+                # Calculate a point a short distance along this heading
+                test_longitude = longitude + 0.01 * np.cos(np.radians(new_heading))
+                test_latitude = latitude + 0.01 * np.sin(np.radians(new_heading))
+                # Check if this new point is over water
+                if world_map(latitudes=test_latitude, longitudes=test_longitude) == 1:
+                    instructions.heading = new_heading  # Update heading to avoid land
+                    break
 
         # Go through all checkpoints and find the next one to reach
         for ch in self.course:
